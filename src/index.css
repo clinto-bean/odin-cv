@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  min-width: 25ch;
+  background-color: #ddd;
+  color: #111;
+  max-width: 25ch;
+}
+
+/* label {
+  min-width: 10ch;
+  max-width: 10ch;
+} */
+
+.full-input-wrapper {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  align-items: center;
+  min-width: 50ch;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.full-input-wrapper input {
+  min-width: 10ch;
+  max-width: 10ch;
+}
+
+#resumeContainer {
+  aspect-ratio: 8.5/11;
+}
