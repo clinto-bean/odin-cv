@@ -31,29 +31,20 @@ function App() {
       {
         key: 1,
         org: "Facebook",
-        role: "Senior Software Engineer",
-        duty: "Develop full-stack applications using ReactJS and Python",
-        from: "2018",
-        to: "Current",
+        role: "Backend Engineer",
+        duty: "Used Python to create backend systems",
+        from: "2017",
+        to: "2018",
       },
     ],
   }
 
   const [formData, setFormData] = useState(defaultFormData)
 
-  const handleInputChange = (e, category, field) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [category]: {
-        ...prevState[category],
-        [field]: e.target.value,
-      },
-    }))
-  }
-
   const addJob = () => {
+    console.log(formData.experience)
     const newJob = {
-      id: formData.experience.length,
+      key: formData.experience.length,
       org: "",
       role: "",
       duty: "",
@@ -66,9 +57,9 @@ function App() {
     })
   }
 
-  const removeJob = (jobId) => {
+  const removeJob = (index) => {
     const updatedExperience = formData.experience.filter(
-      (job) => job.id !== jobId
+      (job) => job.key !== index
     )
     setFormData({
       ...formData,
@@ -80,7 +71,7 @@ function App() {
     <main className='flex flex-col lg:flex-row lg:justify-around p-4 light:bg-red-200 dark:bg-gray-800 light:text-stone-700 dark:text-slate-400 h-screen max-w-screen overflow-x-hidden'>
       <Form
         formData={formData}
-        handleInputChange={handleInputChange}
+        setFormData={setFormData}
         addJob={addJob}
         removeJob={removeJob}
       />

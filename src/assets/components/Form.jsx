@@ -1,9 +1,39 @@
 /* eslint-disable react/prop-types */
+
+import { useState } from "react"
+
 // eslint-disable-next-line no-unused-vars
-const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
+const Form = ({ formData, setFormData, addJob, removeJob }) => {
+  const [index, setIndex] = useState(0)
+  const [editing, setEditing] = useState(false)
+
+  const handleInputChange = (e, category, field) => {
+    if (editing) {
+      if (category === "experience") {
+        const index = e.target.dataset.index
+        setFormData((prevState) => {
+          const updatedExperience = [...prevState[category]]
+          updatedExperience[index][field] = e.target.value
+          return {
+            ...prevState,
+            [category]: updatedExperience,
+          }
+        })
+      } else {
+        setFormData((prevState) => ({
+          ...prevState,
+          [category]: {
+            ...prevState[category],
+            [field]: e.target.value,
+          },
+        }))
+      }
+    }
+  }
+
   return (
     <section id='form' className='flex flex-col max-w-[50vw]'>
-      <div className='inputs flex flex-col'>
+      <div className='p-4 inputs flex flex-col rounded-t-md bg-slate-800 border border-gray-600'>
         <p className='text-3xl font-bold'>Personal Information</p>
         <div className='full-input-wrapper'>
           <div className='flex justify-between w-full items-center py-2'>
@@ -53,7 +83,7 @@ const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
         </div>
       </div>
 
-      <div className='inputs flex flex-col'>
+      <div className='inputs flex flex-col p-4 bg-slate-800 border border-gray-600'>
         <p className='text-3xl font-bold py-4 px-2'>Education</p>
         <div className='input-wrapper'>
           <label htmlFor='userSchool'>School</label>
@@ -101,15 +131,15 @@ const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
           />
         </div>
       </div>
-
-      <div className='inputs flex flex-col'>
+      <div className='inputs flex flex-col p-4 bg-slate-800 border border-gray-600 rounded-b-md'>
         <p className='text-3xl font-bold py-4 px-2'>Experience</p>
         <div className='input-wrapper'>
           <label htmlFor='org'>Company</label>
           <input
             type='text'
             name='org'
-            placeholder={formData.experience[0].org}
+            placeholder={formData.experience[index].org}
+            data-index={index}
             onChange={(e) => handleInputChange(e, "experience", "org")}
           />
         </div>
@@ -118,7 +148,8 @@ const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
           <input
             type='text'
             name='role'
-            placeholder={formData.experience[0].role}
+            placeholder={formData.experience[index].role}
+            data-index={index}
             onChange={(e) => handleInputChange(e, "experience", "role")}
           />
         </div>
@@ -127,7 +158,8 @@ const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
           <input
             type='text'
             name='duty'
-            placeholder={formData.experience[0].duty}
+            placeholder={formData.experience[index].duty}
+            data-index={index}
             onChange={(e) => handleInputChange(e, "experience", "duty")}
           />
         </div>
@@ -138,17 +170,67 @@ const Form = ({ formData, handleInputChange, addJob, removeJob }) => {
               <input
                 type='text'
                 name='from'
-                placeholder={formData.experience[0].from}
+                placeholder={formData.experience[index].from}
+                data-index={index}
                 onChange={(e) => handleInputChange(e, "experience", "from")}
               />
               <input
                 type='text'
                 name='to'
-                placeholder={formData.experience[0].to}
+                placeholder={formData.experience[index].to}
+                data-index={index}
                 onChange={(e) => handleInputChange(e, "experience", "to")}
               />
             </div>
           </div>
+        </div>
+        <div className='full-input-wrapper'>
+          <div className='flex py-4 gap-4 justify-between'>
+            <button
+              className='p-2 bg-gray-300 text-slate-700 font-bold rounded-sm'
+              onClick={() => {
+                if (index == 0) {
+                  return setIndex(formData.experience.length - 1)
+                }
+                return setIndex(index - 1)
+              }}>
+              Previous
+            </button>
+            <button
+              className='p-2 bg-gray-300 text-slate-700 font-bold rounded-sm'
+              onClick={() => {
+                if (index == formData.experience.length - 1) {
+                  return setIndex(0)
+                }
+                return setIndex(index + 1)
+              }}>
+              Next
+            </button>
+          </div>
+          <p className='font-extrabold text-sky-300 text-2xl'>{index + 1}</p>
+          <div className='flex py-4 gap-4 justify-between'>
+            <button
+              className='p-2 bg-gray-300 text-slate-700 font-bold rounded-sm'
+              onClick={() => addJob()}>
+              Add
+            </button>
+            <button
+              className='p-2 bg-gray-300 text-slate-700 font-bold rounded-sm'
+              onClick={() => removeJob()}>
+              Remove
+            </button>
+          </div>
+          <button
+            className='w-full p-4 bg-gray-300 rounded-md text-slate-700 font-bold'
+            onClick={() => {
+              console.log(editing)
+              if (editing) {
+                return setEditing(false)
+              }
+              return setEditing(true)
+            }}>
+            {!editing ? `Edit Resume` : `Stop Editing`}
+          </button>
         </div>
       </div>
     </section>
